@@ -1,5 +1,5 @@
 export type WeatherResponse = {
-  current: {};
+  current: Hour;
   forecast: { forecastday: forecastDay[] };
   location: {};
 };
