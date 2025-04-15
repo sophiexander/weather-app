@@ -37,21 +37,50 @@ export default function Weather({ location }: WeatherProps) {
   return (
     <>
       <h1>TODO fetch Weather... for {location}</h1>
-      <div>
-        <h1>Now</h1>
+      <h1>Now</h1>
+      <div className="place-content-center flex">
         <img src={weather?.current.condition.icon} />
-        {weather?.current.condition.code}
+        <div>
+          <p>{weather?.current.dewpoint_c}</p>
+          <p>{weather?.current.gust_kph}</p>
+        </div>
       </div>
       <div>
         <h1>Forecast</h1>
         {weather?.forecast.forecastday.map((day, i) => {
-          console.log(day.date);
+          const now = new Date();
+          const date = new Date(day.date);
+
           return (
-            <div key={i}>
-              <p>{day.date}</p>
-              <img src={day.day.condition.icon} />
+            <div>
+              <p>
+                {date.toLocaleDateString("en-NZ", {
+                  weekday: "long",
+                  day: "2-digit",
+                  month: "long",
+                })}
+              </p>
+              <div className="flex">
+                {day.hour.map((hour, i) => {
+                  const hourDate = new Date(hour.time);
+                  if (now < hourDate) {
+                    return (
+                      <div key={i}>
+                        <p>
+                          {hourDate.toLocaleTimeString("en-NZ", {
+                            hour12: true,
+                            timeStyle: "short",
+                          })}
+                        </p>
+
+                        <img src={hour.condition.icon} />
+                      </div>
+                    );
+                  }
+                })}
+                ;
+              </div>
             </div>
-            // add lucide icons
           );
         })}
       </div>
