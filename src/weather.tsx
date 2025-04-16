@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { WeatherResponse } from "./types/weather";
+import { Thermometer } from "lucide-react";
 
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 
 type WeatherProps = {
   location: string;
 };
+
 export default function Weather({ location }: WeatherProps) {
   const [weather, setWeather] = useState<WeatherResponse | null>(null);
 
-  location = "Orewa";
+  location = "Muriwai";
   console.log("WEATHER TESTR", location);
   useEffect(() => {
     console.log("in useeffect");
@@ -38,6 +40,8 @@ export default function Weather({ location }: WeatherProps) {
     <>
       <h1>TODO fetch Weather... for {location}</h1>
       <h1>Now</h1>
+      {/* todo add a map feature and pin the location on it */}
+      <Thermometer color="red" size={48} />
       <div className="place-content-center flex">
         <img src={weather?.current.condition.icon} />
         <div>
@@ -60,25 +64,33 @@ export default function Weather({ location }: WeatherProps) {
                   month: "long",
                 })}
               </p>
-              <div className="flex">
-                {day.hour.map((hour, i) => {
-                  const hourDate = new Date(hour.time);
-                  if (now < hourDate) {
-                    return (
-                      <div key={i}>
-                        <p>
-                          {hourDate.toLocaleTimeString("en-NZ", {
-                            hour12: true,
-                            timeStyle: "short",
-                          })}
-                        </p>
+              {/* w-[100cqw] */}
+              <div className=" overflow-auto">
+                <div className="flex">
+                  {day.hour.map((hour, i) => {
+                    const hourDate = new Date(hour.time);
+                    if (now < hourDate) {
+                      return (
+                        <div key={i} className="m-3 flex-auto">
+                          <p className="whitespace-nowrap m-1">
+                            {hourDate.toLocaleTimeString("en-NZ", {
+                              hour12: true,
+                              timeStyle: "short",
+                            })}
+                          </p>
 
-                        <img src={hour.condition.icon} />
-                      </div>
-                    );
-                  }
-                })}
-                ;
+                          <img src={hour.condition.icon} />
+                          <p>TEMP {hour.temp_c}</p>
+                          <p>WIND SPEED {hour.wind_kph}</p>
+                          <p>WIND DIR {hour.wind_dir}</p>
+                          <p>Rain Chance {hour.chance_of_rain}</p>
+                          <p>UV {hour.uv}</p>
+                        </div>
+                      );
+                    }
+                  })}
+                  ;
+                </div>
               </div>
             </div>
           );
