@@ -64,7 +64,11 @@ export default function Weather({ location }: WeatherProps) {
     <>
       <h1>TODO fetch Weather... for {location}</h1>
       {weather ? (
-        <Map latitude={weather.location.lat} longitude={weather.location.lon} />
+        <Map
+          latitude={weather.location.lat}
+          longitude={weather.location.lon}
+          weatherConditionImg={weather.current.condition.icon}
+        />
       ) : (
         ""
       )}
