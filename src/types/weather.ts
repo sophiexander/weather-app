@@ -1,11 +1,20 @@
-export type WeatherResponse = {
-  current: Hour;
+export interface WeatherResponse {
+  current: Current;
   forecast: { forecastday: forecastDay[] };
   location: {};
-};
+}
+
+export interface Current
+  extends Omit<
+    Hour,
+    "chance_of_rain" | "chance_of_snow" | "will_it_rain" | "will_it_snow"
+  > {
+  last_updated: string;
+  last_updated_epoch: string;
+}
 
 export type forecastDay = {
-  astro: {};
+  astro: Astro;
   date: string;
   date_epoch: number;
   day: Day;
@@ -78,7 +87,7 @@ export type Condition = {
   code: number;
 };
 
-export type astro = {
+export type Astro = {
   is_moon_up: number;
   is_sun_up: number;
   moon_illumination: number;
@@ -87,4 +96,15 @@ export type astro = {
   moonset: string;
   sunrise: string;
   sunset: string;
+};
+
+export type Location = {
+  country: string;
+  lat: number;
+  localtime: string;
+  localtime_epoch: number;
+  lon: number;
+  name: string;
+  region: string;
+  tz_id: string;
 };

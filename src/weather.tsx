@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import { WeatherResponse } from "./types/weather";
-import { Thermometer } from "lucide-react";
+import {
+  Sun,
+  Sunrise,
+  Sunset,
+  Thermometer,
+  Umbrella,
+  Wind,
+  WindArrowDown,
+} from "lucide-react";
 
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 
@@ -36,34 +44,77 @@ export default function Weather({ location }: WeatherProps) {
   }, [location]);
 
   console.log(weather);
+  let dateUpdated;
+  if (weather?.current.last_updated) {
+    const dateCurrentForecast = new Date(weather?.current.last_updated);
+    dateUpdated = `Last Updated: 
+    ${dateCurrentForecast.toLocaleDateString("en-NZ", {
+      weekday: "long",
+      day: "2-digit",
+      month: "long",
+    })} 
+    ${dateCurrentForecast.toLocaleTimeString("en-NZ", {
+      hour12: true,
+      timeStyle: "short",
+    })}`;
+  }
+
   return (
     <>
       <h1>TODO fetch Weather... for {location}</h1>
-      <h1>Now</h1>
+
+      <p>{dateUpdated}</p>
+
       {/* todo add a map feature and pin the location on it */}
-      <Thermometer color="red" size={48} />
       <div className="place-content-center flex">
-        <img src={weather?.current.condition.icon} />
         <div>
-          <p>{weather?.current.dewpoint_c}</p>
-          <p>{weather?.current.gust_kph}</p>
+          <img src={weather?.current.condition.icon} />
+        </div>
+        <div>
+          <div className="flex whitespace-nowrap p-1">
+            <Thermometer />
+            <p className="pl-2">{weather?.current.temp_c} °C</p>
+          </div>
+          <div className="flex whitespace-nowrap p-1">
+            <Wind />
+            <p className="pl-2">{weather?.current.wind_kph} kph</p>
+          </div>
+          <div className="flex whitespace-nowrap p-1">
+            <WindArrowDown />
+            <p className="pl-2">{weather?.current.wind_dir}</p>
+          </div>
+          <div className="flex p-1">
+            <Sun />
+            <p className="pl-2">{weather?.current.uv}</p>
+          </div>
         </div>
       </div>
       <div>
-        <h1>Forecast</h1>
         {weather?.forecast.forecastday.map((day, i) => {
           const now = new Date();
           const date = new Date(day.date);
 
           return (
-            <div>
-              <p>
-                {date.toLocaleDateString("en-NZ", {
-                  weekday: "long",
-                  day: "2-digit",
-                  month: "long",
-                })}
-              </p>
+            <div key={i}>
+              <div className="flex place-content-between mx-4">
+                <p>
+                  {date.toLocaleDateString("en-NZ", {
+                    weekday: "long",
+                    day: "2-digit",
+                    month: "long",
+                  })}
+                </p>
+                <div className="flex">
+                  <div className="flex whitespace-nowrap p-1">
+                    <Sunrise />
+                    <p className="pl-2">{day.astro.sunrise}</p>
+                  </div>
+                  <div className="flex whitespace-nowrap p-1">
+                    <Sunset />
+                    <p className="pl-2">{day.astro.sunset}</p>
+                  </div>
+                </div>
+              </div>
               {/* w-[100cqw] */}
               <div className=" overflow-auto">
                 <div className="flex">
@@ -71,20 +122,36 @@ export default function Weather({ location }: WeatherProps) {
                     const hourDate = new Date(hour.time);
                     if (now < hourDate) {
                       return (
-                        <div key={i} className="m-3 flex-auto">
+                        <div key={i} className="m-2 flex-auto">
                           <p className="whitespace-nowrap m-1">
                             {hourDate.toLocaleTimeString("en-NZ", {
                               hour12: true,
                               timeStyle: "short",
                             })}
                           </p>
-
-                          <img src={hour.condition.icon} />
-                          <p>TEMP {hour.temp_c}</p>
-                          <p>WIND SPEED {hour.wind_kph}</p>
-                          <p>WIND DIR {hour.wind_dir}</p>
-                          <p>Rain Chance {hour.chance_of_rain}</p>
-                          <p>UV {hour.uv}</p>
+                          <div className="place-content-center flex">
+                            <img src={hour.condition.icon} />
+                          </div>
+                          <div className="flex whitespace-nowrap p-1">
+                            <Thermometer />
+                            <p className="pl-2">{hour.temp_c} °C</p>
+                          </div>
+                          <div className="flex whitespace-nowrap p-1">
+                            <Wind />
+                            <p className="pl-2">{hour.wind_kph} kph</p>
+                          </div>
+                          <div className="flex whitespace-nowrap p-1">
+                            <WindArrowDown />
+                            <p className="pl-2">{hour.wind_dir}</p>
+                          </div>
+                          <div className="flex whitespace-nowrap p-1">
+                            <Umbrella />
+                            <p className="pl-2">{hour.chance_of_rain}</p>
+                          </div>
+                          <div className="flex p-1">
+                            <Sun />
+                            <p className="pl-2">{hour.uv}</p>
+                          </div>
                         </div>
                       );
                     }
