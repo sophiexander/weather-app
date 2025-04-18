@@ -1,7 +1,7 @@
 export interface WeatherResponse {
   current: Current;
   forecast: { forecastday: forecastDay[] };
-  location: {};
+  location: Location;
 }
 
 export interface Current

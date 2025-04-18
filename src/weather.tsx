@@ -9,6 +9,7 @@ import {
   Wind,
   WindArrowDown,
 } from "lucide-react";
+import Map from "./map";
 
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 
@@ -19,7 +20,7 @@ type WeatherProps = {
 export default function Weather({ location }: WeatherProps) {
   const [weather, setWeather] = useState<WeatherResponse | null>(null);
 
-  location = "Muriwai";
+  location = "Christchurch";
   console.log("WEATHER TESTR", location);
   useEffect(() => {
     console.log("in useeffect");
@@ -62,7 +63,11 @@ export default function Weather({ location }: WeatherProps) {
   return (
     <>
       <h1>TODO fetch Weather... for {location}</h1>
-
+      {weather ? (
+        <Map latitude={weather.location.lat} longitude={weather.location.lon} />
+      ) : (
+        ""
+      )}
       <p>{dateUpdated}</p>
 
       {/* todo add a map feature and pin the location on it */}

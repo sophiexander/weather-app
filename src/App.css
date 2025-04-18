@@ -42,3 +42,13 @@
 .read-the-docs {
   color: #888;
 }
+
+#map {
+  height: 180px;
+}
+
+/* VERY IMPORTANT FOR LEAFLET */
+.leaflet-container {
+  height: 500px;
+  width: 100%;
+}
