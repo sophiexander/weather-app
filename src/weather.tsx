@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { WeatherResponse } from "./types/weather";
 import {
   Sun,
@@ -19,8 +19,9 @@ type WeatherProps = {
 
 export default function Weather({ location }: WeatherProps) {
   const [weather, setWeather] = useState<WeatherResponse | null>(null);
+  const ref = useRef(null);
 
-  location = "Christchurch";
+  // location = "Auckland";
   console.log("WEATHER TESTR", location);
   useEffect(() => {
     console.log("in useeffect");
@@ -58,6 +59,31 @@ export default function Weather({ location }: WeatherProps) {
       hour12: true,
       timeStyle: "short",
     })}`;
+  }
+
+  // var button = document.getElementById("slideRight") as HTMLButtonElement;
+  // button.onclick = function () {
+  //   var container = document.getElementById("container") as HTMLElement;
+  //   sideScroll(container, "right", 25, 100, 10);
+  // };
+
+  // var back = document.getElementById("slideLeft") as HTMLButtonElement;
+  // back.onclick = function () {
+  //   sideScroll(container, "left", 25, 100, 10);
+  // };
+
+  function rightScroll() {
+    var container = document.getElementById("scroll-container") as HTMLElement;
+    console.log("HERE");
+    var scrollAmount = 0;
+    var slideTimer = setInterval(function () {
+      container.scrollLeft += 10;
+
+      scrollAmount += 10;
+      if (scrollAmount >= 100) {
+        window.clearInterval(slideTimer);
+      }
+    }, 25);
   }
 
   return (
@@ -103,8 +129,11 @@ export default function Weather({ location }: WeatherProps) {
           const now = new Date();
           const date = new Date(day.date);
 
+          const backgroundColor = i % 2 === 0 ? "bg-amber-300" : "bg-amber-500";
+
           return (
-            <div key={i}>
+            <div key={i} className={`${backgroundColor} `}>
+              {/* <div> */}
               <div className="flex place-content-between mx-4">
                 <p>
                   {date.toLocaleDateString("en-NZ", {
@@ -125,13 +154,13 @@ export default function Weather({ location }: WeatherProps) {
                 </div>
               </div>
               {/* w-[100cqw] */}
-              <div className=" overflow-auto">
+              <div className={`overflow-hidden no-scrollbar scroll-container`}>
                 <div className="flex">
                   {day.hour.map((hour, i) => {
                     const hourDate = new Date(hour.time);
                     if (now < hourDate) {
                       return (
-                        <div key={i} className="m-2 flex-auto">
+                        <div key={i} className="m-2 flex-auto ">
                           <p className="whitespace-nowrap m-1">
                             {hourDate.toLocaleTimeString("en-NZ", {
                               hour12: true,
@@ -165,8 +194,16 @@ export default function Weather({ location }: WeatherProps) {
                       );
                     }
                   })}
-                  ;
                 </div>
+              </div>
+              {/* </div> */}
+              <div className="flex place-content-between mx-4">
+                <button id="slideLeft" type="button">
+                  Slide left
+                </button>
+                <button id="slideRight" type="button" onClick={rightScroll}>
+                  Slide right
+                </button>
               </div>
             </div>
           );
