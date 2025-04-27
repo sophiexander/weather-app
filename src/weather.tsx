@@ -61,30 +61,13 @@ export default function Weather({ location }: WeatherProps) {
     })}`;
   }
 
-  // var button = document.getElementById("slideRight") as HTMLButtonElement;
-  // button.onclick = function () {
-  //   var container = document.getElementById("container") as HTMLElement;
-  //   sideScroll(container, "right", 25, 100, 10);
-  // };
-
-  // var back = document.getElementById("slideLeft") as HTMLButtonElement;
-  // back.onclick = function () {
-  //   sideScroll(container, "left", 25, 100, 10);
-  // };
-
-  function rightScroll() {
-    var container = document.getElementById("scroll-container") as HTMLElement;
-    console.log("HERE");
-    var scrollAmount = 0;
-    var slideTimer = setInterval(function () {
-      container.scrollLeft += 10;
-
-      scrollAmount += 10;
-      if (scrollAmount >= 100) {
-        window.clearInterval(slideTimer);
-      }
-    }, 25);
-  }
+  const scroll = (distance: number, container: number) => {
+    const containerToScroll = `scroll-container-${container}`;
+    const scrollElement = document.getElementsByClassName(containerToScroll)[0];
+    if (scrollElement) {
+      scrollElement.scrollLeft += distance;
+    }
+  };
 
   return (
     <>
@@ -153,8 +136,10 @@ export default function Weather({ location }: WeatherProps) {
                   </div>
                 </div>
               </div>
-              {/* w-[100cqw] */}
-              <div className={`overflow-hidden no-scrollbar scroll-container`}>
+              {/* w-[100cqw]   scroll-container */}
+              <div
+                className={`overflow-scroll no-scrollbar scroll-container-${i}`}
+              >
                 <div className="flex">
                   {day.hour.map((hour, i) => {
                     const hourDate = new Date(hour.time);
@@ -198,10 +183,18 @@ export default function Weather({ location }: WeatherProps) {
               </div>
               {/* </div> */}
               <div className="flex place-content-between mx-4">
-                <button id="slideLeft" type="button">
+                <button
+                  id="slideLeft"
+                  type="button"
+                  onClick={() => scroll(-40, i)}
+                >
                   Slide left
                 </button>
-                <button id="slideRight" type="button" onClick={rightScroll}>
+                <button
+                  id="slideRight"
+                  type="button"
+                  onClick={() => scroll(40, i)}
+                >
                   Slide right
                 </button>
               </div>
