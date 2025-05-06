@@ -8,6 +8,8 @@ import {
   Umbrella,
   Wind,
   WindArrowDown,
+  ArrowLeft,
+  ArrowRight,
 } from "lucide-react";
 import Map from "./map";
 
@@ -188,14 +190,14 @@ export default function Weather({ location }: WeatherProps) {
                   type="button"
                   onClick={() => scroll(-40, i)}
                 >
-                  Slide left
+                  <ArrowLeft />
                 </button>
                 <button
                   id="slideRight"
                   type="button"
                   onClick={() => scroll(40, i)}
                 >
-                  Slide right
+                  <ArrowRight />
                 </button>
               </div>
             </div>
