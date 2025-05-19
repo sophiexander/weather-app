@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="">
       <div className="text-4xl">Weather {location}</div>
-      <Search setLocation={setLocation} />
+      <Search setLocation={setLocation} location={location} />
       <Weather location={location} />
     </div>
   );

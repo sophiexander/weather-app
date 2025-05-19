@@ -73,7 +73,6 @@ export default function Weather({ location }: WeatherProps) {
 
   return (
     <>
-      <h1>TODO fetch Weather... for {location}</h1>
       {weather ? (
         <Map
           latitude={weather.location.lat}
